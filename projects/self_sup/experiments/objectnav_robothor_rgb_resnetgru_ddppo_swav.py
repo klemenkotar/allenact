@@ -42,7 +42,7 @@ class ObjectNaviThorRGBPPOSWAVExperimentConfig(ObjectNavRoboThorBaseConfig):
                     "input_width": self.SCREEN_SIZE,
                     "output_width": 7,
                     "output_height": 7,
-                    "output_dims": 512,
+                    "output_dims": 2048,
                     "pool": False,
                     "torchvision_resnet_model": models.resnet50,
                     "pretrained_weights_path": "pretrained_model_ckpts/SWAVRoboTHOR_200.pt",
