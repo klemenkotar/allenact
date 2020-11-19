@@ -52,6 +52,7 @@ class ResnetPreProcessorHabitat(Preprocessor):
         output_dims: int,
         pool: bool,
         torchvision_resnet_model: Callable[..., models.ResNet] = models.resnet18,
+        pretrained_weights_path: str = None,
         parallel: bool = False,
         device: Optional[torch.device] = None,
         device_ids: Optional[List[torch.device]] = None,
@@ -87,8 +88,15 @@ class ResnetPreProcessorHabitat(Preprocessor):
             List[torch.device], list(range(torch.cuda.device_count()))
         )
 
+        if pretrained_weights_path is None:
+            resnet_model = self.make_model(pretrained=True).to(self.device)
+        else:
+            resnet_model = self.make_model(pretrained=False)
+            resnet_model.load_state_dict(torch.load(pretrained_weights_path, map_location='cpu'), strict=False)
+            resnet_model.to(self.device)
+
         self.resnet: Union[ResNetEmbedder, torch.nn.DataParallel] = ResNetEmbedder(
-            self.make_model(pretrained=True).to(self.device), pool=self.pool
+            resnet_model, pool=self.pool
         )
 
         if self.parallel:
