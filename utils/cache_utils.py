@@ -147,6 +147,9 @@ class DynamicDistanceCache(object):
             [Dict[str, Any], Union[Dict[str, Any], str]], float
         ],
     ) -> float:
+        return native_distance_function(
+            position, target
+        )
         # Convert the position to its rounded string representation
         position_str = self._pos_to_str(position)
         # If the target is also a position, convert it to its rounded string representation
