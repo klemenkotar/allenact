@@ -45,7 +45,7 @@ class ObjectNaviThorRGBPPOSWAVExperimentConfig(ObjectNavRoboThorBaseConfig):
                     "output_dims": 2048,
                     "pool": False,
                     "torchvision_resnet_model": models.resnet50,
-                    "pretrained_weights_path": "pretrained_model_ckpts/SWAVRoboTHOR_200.pt",
+                    "pretrained_weights_path": "pretrained_model_ckpts/SWAVRoboTHOR_400.pt",
                     "input_uuids": ["rgb_lowres"],
                     "output_uuid": "rgb_resnet",
                     "parallel": False,
