@@ -244,7 +244,7 @@ class GymTutorialExperimentConfig(ExperimentConfig):
             )
         return {
             "nprocesses": 16 if mode == "train" else 1,
-            "devices": [0,1],
+            "devices": [1],
             "visualizer": visualizer,
         }
 
