@@ -11,7 +11,7 @@ from allenact.base_abstractions.task import Task, TaskSampler
 from allenact.utils.experiment_utils import set_seed
 from allenact.utils.system import get_logger
 from allenact_plugins.gym_plugin.gym_environment import GymEnvironment
-from allenact_plugins.gym_plugin.gym_sensors import GymBox2DSensor
+from allenact_plugins.gym_plugin.gym_sensors import GymBox2DSensor, GymAtariSensor
 
 
 class GymTask(Task[gym.Env]):
@@ -91,6 +91,27 @@ class GymContinuousBox2DTask(GymTask):
         )
 
 
+class GymAtariTask(GymTask):
+    """Task for a gym Atari Env; it allows interfacing
+    allenact with gym tasks."""
+
+    @classmethod
+    def class_action_names(cls, **kwargs) -> Tuple[str, ...]:
+        return tuple()
+
+    def _step(self, action: Sequence[float]) -> RLStepResult:
+        action = np.array(action)
+
+        gym_obs, reward, self._gym_done, info = self.env.step(action=action)
+
+        return RLStepResult(
+            observation=self.get_observations(gym_obs=gym_obs),
+            reward=reward,
+            done=self.is_done(),
+            info=info,
+        )
+
+
 def task_selector(env_name: str) -> type:
     """Helper function for `GymTaskSampler`."""
     if env_name in [
@@ -98,6 +119,7 @@ def task_selector(env_name: str) -> type:
         "LunarLanderContinuous-v2",
         "BipedalWalker-v2",
         "BipedalWalkerHardcore-v2",
+        "PongNoFrameskip-v4"
     ]:
         return GymContinuousBox2DTask
     raise NotImplementedError()
@@ -113,6 +135,10 @@ def sensor_selector(env_name: str) -> Sensor:
         "LunarLander-v2",
     ]:
         return GymBox2DSensor(env_name)
+    elif env_name in [
+        "PongNoFrameskip-v4",
+    ]:
+        return GymAtariSensor()
     raise NotImplementedError()
 
 
@@ -122,6 +148,7 @@ class GymTaskSampler(TaskSampler):
     def __init__(
         self,
         gym_env_type: str = "LunarLanderContinuous-v2",
+        gym_env_wrappers: List[gym.Wrapper] = [],
         sensors: Optional[Union[SensorSuite, List[Sensor]]] = None,
         max_tasks: Optional[int] = None,
         num_unique_seeds: Optional[int] = None,
@@ -202,7 +229,7 @@ class GymTaskSampler(TaskSampler):
 
         self.num_tasks_generated = 0
         self.task_type = task_selector(self.gym_env_type)
-        self.env: GymEnvironment = GymEnvironment(self.gym_env_type)
+        self.env: GymEnvironment = GymEnvironment(self.gym_env_type, wrappers=gym_env_wrappers)
 
     @property
     def length(self) -> Union[int, float]:

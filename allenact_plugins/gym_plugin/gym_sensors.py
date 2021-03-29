@@ -48,3 +48,34 @@ class GymBox2DSensor(Sensor[gym.Env, Task[gym.Env]]):
             return gym_obs
         else:
             return env.initial_observation
+
+
+class GymAtariSensor(Sensor[gym.Env, Task[gym.Env]]):
+    """Wrapper for gym Atari tasks' observations."""
+
+    def __init__(
+        self,
+        uuid: str = "gym_atari_sensor",
+        **kwargs: Any
+    ):
+        observation_space = self._get_observation_space()
+
+        super().__init__(**prepare_locals_for_super(locals()))
+
+    def _get_observation_space(self) -> gym.Space:
+        return gym.spaces.Box(
+            low=0, high=255, shape=(3, 84, 84), dtype=np.uint8
+        )
+
+    def get_observation(
+        self,
+        env: GymEnvironment,
+        task: Optional[SubTaskType],
+        *args,
+        gym_obs: Optional[np.ndarray] = None,
+        **kwargs: Any
+    ) -> np.ndarray:
+        if gym_obs is not None:
+            return gym_obs
+        else:
+            return env.initial_observation

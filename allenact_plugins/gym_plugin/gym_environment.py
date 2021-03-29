@@ -7,8 +7,11 @@ import numpy as np
 class GymEnvironment(gym.Wrapper):
     """gym.Wrapper with minimal bookkeeping (initial observation)."""
 
-    def __init__(self, gym_env_name: str):
-        super().__init__(gym.make(gym_env_name))
+    def __init__(self, gym_env_name: str, wrappers=[]):
+        env = gym.make(gym_env_name)
+        for wrapper in wrappers:
+            env = wrapper(env)
+        super().__init__(env)
         self._initial_observation: Optional[np.ndarray] = None
         self.reset()  # generate initial observation
 
