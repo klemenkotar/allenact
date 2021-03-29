@@ -139,7 +139,7 @@ class GymTutorialExperimentConfig(ExperimentConfig):
         deterministic_cudnn: bool = False,
     ) -> Dict[str, Any]:
         return self._get_sampler_args(
-            process_ind=process_ind, mode="train", seeds=seeds, devices=devices,
+            process_ind=process_ind, mode="train", seeds=seeds
         )
 
     def valid_task_sampler_args(
@@ -151,7 +151,7 @@ class GymTutorialExperimentConfig(ExperimentConfig):
         deterministic_cudnn: bool = False,
     ) -> Dict[str, Any]:
         return self._get_sampler_args(
-            process_ind=process_ind, mode="valid", seeds=seeds, devices=devices,
+            process_ind=process_ind, mode="valid", seeds=seeds
         )
 
     def test_task_sampler_args(
@@ -162,7 +162,7 @@ class GymTutorialExperimentConfig(ExperimentConfig):
         seeds: Optional[List[int]] = None,
         deterministic_cudnn: bool = False,
     ) -> Dict[str, Any]:
-        return self._get_sampler_args(process_ind=process_ind, mode="test", seeds=seeds, devices=devices,)
+        return self._get_sampler_args(process_ind=process_ind, mode="test", seeds=seeds)
 
     # %%
     """
@@ -172,7 +172,7 @@ class GymTutorialExperimentConfig(ExperimentConfig):
 
     # %%
     def _get_sampler_args(
-        self, process_ind: int, mode: str, seeds: List[int], devices=[],
+        self, process_ind: int, mode: str, seeds: List[int]
     ) -> Dict[str, Any]:
         """Generate initialization arguments for train, valid, and test
         TaskSamplers.
@@ -201,7 +201,6 @@ class GymTutorialExperimentConfig(ExperimentConfig):
 
         return dict(
             gym_env_type="PongNoFrameskip-v4",
-            devices=devices,
             gym_env_wrappers=[self._make_atari_wrapper],
             sensors=self.SENSORS,  # sensors used to return observations to the agent
             max_tasks=max_tasks,  # see above
@@ -245,7 +244,7 @@ class GymTutorialExperimentConfig(ExperimentConfig):
             )
         return {
             "nprocesses": 16 if mode == "train" else 1,
-            "devices": [0] if torch.cuda.is_available() else [],
+            "devices": [0,1],
             "visualizer": visualizer,
         }
 
