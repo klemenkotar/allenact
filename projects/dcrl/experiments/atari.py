@@ -243,8 +243,8 @@ class GymTutorialExperimentConfig(ExperimentConfig):
                 ),
             )
         return {
-            "nprocesses": 16 if mode == "train" else 1,
-            "devices": [0] if torch.cuda.is_available() else [],
+            "nprocesses": [16] * 8 if mode == "train" else 1,
+            "devices": [0, 1, 2, 3, 4, 5, 6, 7] if torch.cuda.is_available() else [],
             "visualizer": visualizer,
         }
 
@@ -259,7 +259,7 @@ class GymTutorialExperimentConfig(ExperimentConfig):
     # %%
     @classmethod
     def training_pipeline(cls, **kwargs) -> TrainingPipeline:
-        ppo_steps = int(1.2e6)
+        ppo_steps = int(4.0e7)
         return TrainingPipeline(
             named_losses=dict(
                 ppo_loss=PPO(clip_param=0.2, value_loss_coef=0.5, entropy_coef=0.0,),
