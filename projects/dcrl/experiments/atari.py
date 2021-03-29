@@ -242,9 +242,15 @@ class GymTutorialExperimentConfig(ExperimentConfig):
                     fps=30,
                 ),
             )
+        devices = []
+        if torch.cuda.is_available():
+            if mode == "train":
+                devices = [0, 1, 2, 3, 4, 5, 6, 7]
+            else:
+                devices = [0]
         return {
-            "nprocesses": [[16], [16], [16], [16], [16], [16], [16], [16]] if mode == "train" else 1,
-            "devices": [0, 1, 2, 3, 4, 5, 6, 7] if torch.cuda.is_available() else [],
+            "nprocesses": [16] * 8 if mode == "train" else 1,
+            "devices": devices,
             "visualizer": visualizer,
         }
 
