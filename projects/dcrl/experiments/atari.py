@@ -243,7 +243,7 @@ class GymTutorialExperimentConfig(ExperimentConfig):
                 ),
             )
         return {
-            "nprocesses": 128 if mode == "train" else 1,
+            "nprocesses": 16 if mode == "train" else 1,
             "devices": [0] if torch.cuda.is_available() else [],
             "visualizer": visualizer,
         }
