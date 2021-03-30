@@ -268,16 +268,16 @@ class GymTutorialExperimentConfig(ExperimentConfig):
         ppo_steps = int(4.0e7)
         return TrainingPipeline(
             named_losses=dict(
-                ppo_loss=PPO(clip_param=0.2, value_loss_coef=0.5, entropy_coef=0.0,),
+                ppo_loss=PPO(clip_param=0.2, value_loss_coef=1.0, entropy_coef=0.01,),
             ),  # type:ignore
             pipeline_stages=[
                 PipelineStage(loss_names=["ppo_loss"], max_stage_steps=ppo_steps),
             ],
             optimizer_builder=Builder(cast(optim.Optimizer, optim.Adam), dict(lr=1e-3)),
             num_mini_batch=1,
-            update_repeats=80,
+            update_repeats=3,
             max_grad_norm=100,
-            num_steps=2000,
+            num_steps=10000,
             gamma=0.99,
             use_gae=False,
             gae_lambda=0.95,
