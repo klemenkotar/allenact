@@ -273,17 +273,17 @@ class GymTutorialExperimentConfig(ExperimentConfig):
             pipeline_stages=[
                 PipelineStage(loss_names=["ppo_loss"], max_stage_steps=ppo_steps),
             ],
-            optimizer_builder=Builder(cast(optim.Optimizer, optim.Adam), dict(lr=2.5e-4)),
-            num_mini_batch=4,
+            optimizer_builder=Builder(cast(optim.Optimizer, optim.Adam), dict(lr=3e-4)),
+            num_mini_batch=1,
             update_repeats=3,
-            max_grad_norm=100,
+            max_grad_norm = 0.5,
             num_steps=128,
             gamma=0.99,
-            use_gae=False,
+            use_gae=True,
             gae_lambda=0.95,
             advance_scene_rollout_period=None,
             save_interval=200000,
-            metric_accumulate_interval=500,
+            metric_accumulate_interval=1000,
             lr_scheduler_builder=Builder(
                 LambdaLR, {"lr_lambda": LinearDecay(steps=ppo_steps)},  # type:ignore
             ),
