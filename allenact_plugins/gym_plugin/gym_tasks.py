@@ -119,7 +119,8 @@ def task_selector(env_name: str) -> type:
         "LunarLanderContinuous-v2",
         "BipedalWalker-v2",
         "BipedalWalkerHardcore-v2",
-        "PongNoFrameskip-v4"
+        "PongNoFrameskip-v4",
+        "AlienNoFrameskip-v4"
     ]:
         return GymContinuousBox2DTask
     raise NotImplementedError()
@@ -137,6 +138,7 @@ def sensor_selector(env_name: str) -> Sensor:
         return GymBox2DSensor(env_name)
     elif env_name in [
         "PongNoFrameskip-v4",
+        "AlienNoFrameskip-v4"
     ]:
         return GymAtariSensor()
     raise NotImplementedError()
