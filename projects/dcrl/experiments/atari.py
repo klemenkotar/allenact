@@ -245,11 +245,11 @@ class GymTutorialExperimentConfig(ExperimentConfig):
         devices = []
         if torch.cuda.is_available():
             if mode == "train":
-                devices = [0, 1, 2, 3, 4, 5, 6, 7]
+                devices = [0]
             else:
                 devices = [0]
         return {
-            "nprocesses": [16] * 8 if mode == "train" else 1,
+            "nprocesses": [64] * 1 if mode == "train" else 1,
             "devices": devices,
             "visualizer": visualizer,
         }
@@ -274,10 +274,10 @@ class GymTutorialExperimentConfig(ExperimentConfig):
                 PipelineStage(loss_names=["ppo_loss"], max_stage_steps=ppo_steps),
             ],
             optimizer_builder=Builder(cast(optim.Optimizer, optim.Adam), dict(lr=1e-3)),
-            num_mini_batch=10,
+            num_mini_batch=4,
             update_repeats=3,
             max_grad_norm=100,
-            num_steps=10000,
+            num_steps=128,
             gamma=0.99,
             use_gae=False,
             gae_lambda=0.95,
