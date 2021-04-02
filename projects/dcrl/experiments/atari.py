@@ -75,7 +75,7 @@ from allenact.utils.viz_utils import VizSuite, AgentViewViz
 class GymTutorialExperimentConfig(ExperimentConfig):
     @classmethod
     def tag(cls) -> str:
-        return "Pong-Baseline"
+        return "Alien-Baseline"
 
     # %%
     """
@@ -200,7 +200,7 @@ class GymTutorialExperimentConfig(ExperimentConfig):
             )
 
         return dict(
-            gym_env_type="PongNoFrameskip-v4",
+            gym_env_type="AlienNoFrameskip-v4",
             gym_env_wrappers=[self._make_atari_wrapper],
             sensors=self.SENSORS,  # sensors used to return observations to the agent
             max_tasks=max_tasks,  # see above
@@ -245,11 +245,11 @@ class GymTutorialExperimentConfig(ExperimentConfig):
         devices = []
         if torch.cuda.is_available():
             if mode == "train":
-                devices = [0]
+                devices = [0,1,2,3,4,5,6,7]
             else:
                 devices = [0]
         return {
-            "nprocesses": [64] * 1 if mode == "train" else 1,
+            "nprocesses": [64] * 8 if mode == "train" else 1,
             "devices": devices,
             "visualizer": visualizer,
         }
