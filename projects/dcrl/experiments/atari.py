@@ -265,7 +265,7 @@ class GymTutorialExperimentConfig(ExperimentConfig):
     # %%
     @classmethod
     def training_pipeline(cls, **kwargs) -> TrainingPipeline:
-        ppo_steps = int(4.0e7)
+        ppo_steps = int(1.0e7)
         return TrainingPipeline(
             named_losses=dict(
                 ppo_loss=PPO(clip_param=0.2, value_loss_coef=1.0, entropy_coef=0.01,),
@@ -276,7 +276,7 @@ class GymTutorialExperimentConfig(ExperimentConfig):
             optimizer_builder=Builder(cast(optim.Optimizer, optim.Adam), dict(lr=1e-3)),
             num_mini_batch=4,
             update_repeats=3,
-            max_grad_norm=100,
+            max_grad_norm=1,
             num_steps=128,
             gamma=0.99,
             use_gae=False,
