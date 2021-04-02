@@ -276,7 +276,7 @@ class GymTutorialExperimentConfig(ExperimentConfig):
             optimizer_builder=Builder(cast(optim.Optimizer, optim.Adam), dict(lr=1e-3)),
             num_mini_batch=4,
             update_repeats=3,
-            max_grad_norm=1,
+            max_grad_norm=100,
             num_steps=128,
             gamma=0.99,
             use_gae=False,
