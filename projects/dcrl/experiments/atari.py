@@ -273,7 +273,7 @@ class GymTutorialExperimentConfig(ExperimentConfig):
             pipeline_stages=[
                 PipelineStage(loss_names=["ppo_loss"], max_stage_steps=ppo_steps),
             ],
-            optimizer_builder=Builder(cast(optim.Optimizer, optim.Adam), dict(lr=1e-3)),
+            optimizer_builder=Builder(cast(optim.Optimizer, optim.Adam), dict(lr=2.5e-4)),
             num_mini_batch=4,
             update_repeats=3,
             max_grad_norm=100,
